@@ -28,6 +28,20 @@ func TestWifi() error {
 	return nil
 }
 
+func ShowRouteInfo() error {
+	cmd := exec.Command("ip", "route")
+
+	cmd.Stdin = os.Stdin
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	err := cmd.Run()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func ShowInterfaceInfo() error {
 	cmd := exec.Command("ip", "addr")
 
