@@ -33,6 +33,20 @@ func TestWifi() error {
 	return nil
 }
 
+func Vim(args []string) error {
+	cmd := exec.Command("vim", args...)
+
+	cmd.Stdin = os.Stdin
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	err := cmd.Run()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func IWCTL(args []string) error {
 	cmd := exec.Command("iwctl", args...)
 
