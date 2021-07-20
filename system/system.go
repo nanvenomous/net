@@ -1,12 +1,18 @@
 package system
 
 import (
+	"io/ioutil"
 	"os"
 	"os/exec"
+	"os/user"
+	"path"
+
+	"github.com/spf13/cobra"
+	"gopkg.in/yaml.v2"
 )
 
 type conf struct {
-	Devices map[string]string
+	Interface string
 }
 
 var (
@@ -40,6 +46,18 @@ func IWCTL(args []string) error {
 		return err
 	}
 	return nil
+}
+
+func GetInterfaceFromConfig() string {
+	usr, err := user.Current()
+	cobra.CheckErr(err)
+	confPath := path.Join(usr.HomeDir, ".config", "net.yaml")
+	confFile, err := ioutil.ReadFile(confPath)
+	cobra.CheckErr(err)
+	err = yaml.Unmarshal(confFile, &C)
+	cobra.CheckErr(err)
+
+	return C.Interface
 }
 
 func ShowRouteInfo() error {
