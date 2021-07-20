@@ -4,10 +4,9 @@ import (
 	"io/ioutil"
 	"os"
 	"os/exec"
-	"os/user"
-	"path"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 	"gopkg.in/yaml.v2"
 )
 
@@ -49,9 +48,7 @@ func IWCTL(args []string) error {
 }
 
 func GetInterfaceFromConfig() string {
-	usr, err := user.Current()
-	cobra.CheckErr(err)
-	confPath := path.Join(usr.HomeDir, ".config", "net.yaml")
+	confPath := viper.ConfigFileUsed()
 	confFile, err := ioutil.ReadFile(confPath)
 	cobra.CheckErr(err)
 	err = yaml.Unmarshal(confFile, &C)

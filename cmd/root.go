@@ -18,6 +18,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"path"
 
 	"github.com/spf13/cobra"
 
@@ -83,7 +84,7 @@ func init() {
 		return shells, cobra.ShellCompDirectiveDefault
 	})
 
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.net.yaml)")
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.config/net.yaml)")
 	// rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
@@ -98,14 +99,15 @@ func initConfig() {
 		cobra.CheckErr(err)
 
 		// Search config in home directory with name ".net" (without extension).
-		viper.AddConfigPath(home)
-		viper.SetConfigName(".net")
+		viper.AddConfigPath(path.Join(home, ".config"))
+		viper.SetConfigName("net")
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match
 
+	viper.ReadInConfig()
 	// If a config file is found, read it in.
-	if err := viper.ReadInConfig(); err == nil {
-		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
-	}
+	// if err := viper.ReadInConfig(); err == nil {
+	// 	fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
+	// }
 }
