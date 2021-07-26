@@ -4,7 +4,9 @@ import (
 	"io/ioutil"
 	"os"
 	"os/exec"
+	"strings"
 
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"gopkg.in/yaml.v2"
@@ -18,6 +20,12 @@ var (
 	C           conf
 	DeviceNames []string
 )
+
+func Header(text string) {
+	textLen := len(text)
+	color.Magenta(strings.Repeat("_", textLen))
+	color.Magenta(strings.ToUpper(text))
+}
 
 func TestWifi() error {
 	cmd := exec.Command("ping", "-c", "1", "google.com")

@@ -1,7 +1,6 @@
 package system
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -26,18 +25,4 @@ func TestPrependArgument(t *testing.T) {
 	expectedArr := []string{firstString, secondString}
 	arr = PrependArgument(firstString, arr)
 	slicesEqual(t, arr, expectedArr)
-}
-
-func TestGetDeviceID(t *testing.T) {
-	echoName := "Tribit XFree Tune"
-	expectedID := "AC:18:12:00:65:FC"
-	echoID, err := GetDeviceID(echoName)
-	fmt.Println(echoID)
-
-	if err != nil {
-		t.Error(err)
-	}
-	if !(echoID == expectedID) {
-		t.Error("id's not equal")
-	}
 }
