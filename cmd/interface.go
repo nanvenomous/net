@@ -16,7 +16,11 @@ limitations under the License.
 package cmd
 
 import (
+	"fmt"
+
+	"github.com/jroimartin/gocui"
 	"github.com/mrgarelli/net/system"
+	"github.com/mrgarelli/tui"
 	"github.com/spf13/cobra"
 )
 
@@ -27,9 +31,11 @@ var interfaceCmd = &cobra.Command{
 	Long: `show the network interfaces created corresponding to drivers
 	should also show relevant ip addresses`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		err := system.ShowInterfaceInfo()
-		if err != nil {
+		if interfaces, err := system.Interfaces(); err != nil {
 			return err
+		} else {
+			selection := tui.LaunchSelection(interfaces)
+			fmt.Printf("%q\n", selection)
 		}
 		return nil
 	},
@@ -47,4 +53,19 @@ func init() {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// interfaceCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+}
+
+func layout(g *gocui.Gui) error {
+	maxX, maxY := g.Size()
+	if v, err := g.SetView("hello", maxX/2-7, maxY/2, maxX/2+7, maxY/2+2); err != nil {
+		if err != gocui.ErrUnknownView {
+			return err
+		}
+		fmt.Fprintln(v, "Hello world!")
+	}
+	return nil
+}
+
+func quit(g *gocui.Gui, v *gocui.View) error {
+	return gocui.ErrQuit
 }
