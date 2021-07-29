@@ -4,6 +4,7 @@ import (
 	"io/ioutil"
 	"os"
 	"os/exec"
+	"regexp"
 	"strings"
 
 	"github.com/fatih/color"
@@ -91,6 +92,23 @@ func ShowRouteInfo() error {
 		return err
 	}
 	return nil
+}
+
+func Interfaces() ([]string, error) {
+	out, err := exec.Command("ip", "addr").Output()
+	if err != nil {
+		return []string{}, err
+	}
+	re := regexp.MustCompile(`[0-9]: \w.+: `)
+	expressions := re.FindAll(out, -1)
+	interfaces := make([]string, 0)
+	for _, exp := range expressions {
+		strExp := strings.Split(string(exp), ": ")[1]
+		if strExp != "lo" { // ignore loopback
+			interfaces = append(interfaces, strExp)
+		}
+	}
+	return interfaces, nil
 }
 
 func ShowInterfaceInfo() error {
