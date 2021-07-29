@@ -24,10 +24,10 @@ import (
 // configCmd represents the config command
 var configCmd = &cobra.Command{
 	Use:   "config",
-	Short: "edit the config file manually with vim",
-	Long:  `edit the config file manually with vim`,
+	Short: "show the config file contents",
+	Long:  `show the config file contents`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		err := system.Vim([]string{viper.ConfigFileUsed()})
+		err := system.Cat([]string{viper.ConfigFileUsed()})
 		if err != nil {
 			return err
 		}

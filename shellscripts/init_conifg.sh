@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 exampleConfig=".config/net.yaml"
-// TODO: this should be synced with config in cmd/root.go 
+# TODO: this should be synced with config in cmd/root.go 
 configLocation="${HOME}/.config/net.yaml"
 
 if [ ! -f "${configLocation}" ]; then

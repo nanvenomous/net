@@ -42,8 +42,8 @@ func TestWifi() error {
 	return nil
 }
 
-func Vim(args []string) error {
-	cmd := exec.Command("vim", args...)
+func Cat(args []string) error {
+	cmd := exec.Command("cat", args...)
 
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
