@@ -21,6 +21,7 @@ import (
 	"github.com/mrgarelli/net/system"
 	"github.com/mrgarelli/tui"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 // interfaceCmd represents the interface command
@@ -34,7 +35,12 @@ var interfaceCmd = &cobra.Command{
 			return err
 		} else {
 			selection := tui.LaunchSelection(interfaces)
-			fmt.Printf("%q\n", selection)
+			viper.Set("interface", selection)
+			err := viper.WriteConfig()
+			if err != nil {
+				return err
+			}
+			fmt.Println("set interface in config file to: ", selection)
 		}
 		return nil
 	},
