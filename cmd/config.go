@@ -16,14 +16,17 @@ limitations under the License.
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/mrgarelli/net/system"
+	"github.com/mrgarelli/tui"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
-// configCmd represents the config command
-var configCmd = &cobra.Command{
-	Use:   "config",
+// showCmd represents the show command
+var showCmd = &cobra.Command{
+	Use:   "show",
 	Short: "show the config file contents",
 	Long:  `show the config file contents`,
 	RunE: func(cmd *cobra.Command, args []string) error {
@@ -34,6 +37,42 @@ var configCmd = &cobra.Command{
 		return nil
 	},
 }
+
+// interfaceCmd represents the interface command
+var interfaceCmd = &cobra.Command{
+	Use:   "interface",
+	Short: "set the network interface for the program",
+	Long:  `set the network interface for the program`,
+	RunE: func(cmd *cobra.Command, args []string) error {
+		if interfaces, err := system.Interfaces(); err != nil {
+			return err
+		} else {
+			selection := tui.LaunchSelection(interfaces)
+			viper.Set("interface", selection)
+			err := viper.WriteConfig()
+			if err != nil {
+				return err
+			}
+			fmt.Println("set interface in config file to: ", selection)
+		}
+		return nil
+	},
+}
+
+// configCmd represents the config command
+var configCmd = func() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "config",
+		Short: "command set for viewing and editing program configuration",
+		Long:  `command set for viewing and editing program configuration`,
+		Run: func(cmd *cobra.Command, args []string) {
+			cmd.Help()
+		},
+	}
+	cmd.AddCommand(showCmd)
+	cmd.AddCommand(interfaceCmd)
+	return cmd
+}()
 
 func init() {
 	rootCmd.AddCommand(configCmd)
