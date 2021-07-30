@@ -37,7 +37,8 @@ var rootCmd = &cobra.Command{
 	Use:   "net",
 	Short: "Manages network connections",
 	Long: `Manages network connections
-uses iwctl under the hood`,
+aims to be stateful and highly user focused
+wraps iwd & iwctl under the hood`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	Run: func(cmd *cobra.Command, args []string) {

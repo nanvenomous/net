@@ -23,8 +23,8 @@ import (
 // testCmd represents the test command
 var testCmd = &cobra.Command{
 	Use:   "test",
-	Short: "pings google once",
-	Long:  `pings google once`,
+	Short: "pings google 2x",
+	Long:  `pings google 2x`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		err := system.TestWifi()
 		if err != nil {
