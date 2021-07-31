@@ -1,6 +1,7 @@
 package system
 
 import (
+	"errors"
 	"io/ioutil"
 	"os"
 	"os/exec"
@@ -76,6 +77,10 @@ func GetInterfaceFromConfig() string {
 	cobra.CheckErr(err)
 	err = yaml.Unmarshal(confFile, &C)
 	cobra.CheckErr(err)
+	if C.Interface == "" {
+		err = errors.New("first specify and interface with > net config interface")
+		cobra.CheckErr(err)
+	}
 
 	return C.Interface
 }
