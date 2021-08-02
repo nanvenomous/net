@@ -1,0 +1,27 @@
+name: ValidationNet
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    name: ValidationJob
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: '^1.16.0' # The Go version to download (if necessary) and use.
+
+    - name: Tidy Module
+      run: |
+        go mod tidy
+
+    - name: Build
+      run: go build -v ./...
+    - name: Test
+      run: go test -v ./...
