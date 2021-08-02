@@ -20,13 +20,14 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// ctrlCmd represents the ctrl command
-var ctrlCmd = &cobra.Command{
-	Use:   "ctrl",
-	Short: "simply invokes iwctl",
-	Long:  `simply invokes iwctl`,
+// statusCmd represents the status command
+var statusCmd = &cobra.Command{
+	Use:   "status",
+	Short: "get network connectivity",
+	Long:  `get network connectivity`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		err := system.IWCTL([]string{})
+		intf := system.GetInterfaceFromConfig()
+		err := system.IWCTL([]string{"station", intf, "show"})
 		if err != nil {
 			return err
 		}
@@ -35,7 +36,15 @@ var ctrlCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(ctrlCmd)
-	// ctrlCmd.PersistentFlags().String("foo", "", "A help for foo")
-	// ctrlCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	rootCmd.AddCommand(statusCmd)
+
+	// Here you will define your flags and configuration settings.
+
+	// Cobra supports Persistent Flags which will work for this command
+	// and all subcommands, e.g.:
+	// statusCmd.PersistentFlags().String("foo", "", "A help for foo")
+
+	// Cobra supports local flags which will only run when this command
+	// is called directly, e.g.:
+	// statusCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

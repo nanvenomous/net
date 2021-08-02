@@ -9,7 +9,7 @@ import (
 	"strings"
 
 	"github.com/fatih/color"
-	"github.com/spf13/cobra"
+	"github.com/mrgarelli/kik"
 	"github.com/spf13/viper"
 	"gopkg.in/yaml.v2"
 )
@@ -74,12 +74,12 @@ func IWCTL(args []string) error {
 func GetInterfaceFromConfig() string {
 	confPath := viper.ConfigFileUsed()
 	confFile, err := ioutil.ReadFile(confPath)
-	cobra.CheckErr(err)
+	kik.FailIf(err, 1)
 	err = yaml.Unmarshal(confFile, &C)
-	cobra.CheckErr(err)
+	kik.FailIf(err, 1)
 	if C.Interface == "" {
 		err = errors.New("first specify and interface with > net config interface")
-		cobra.CheckErr(err)
+		kik.FailIf(err, 1)
 	}
 
 	return C.Interface

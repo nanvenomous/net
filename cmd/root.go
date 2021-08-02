@@ -20,6 +20,7 @@ import (
 	"os"
 	"path"
 
+	"github.com/mrgarelli/kik"
 	"github.com/spf13/cobra"
 
 	homedir "github.com/mitchellh/go-homedir"
@@ -65,7 +66,7 @@ wraps iwd & iwctl under the hood`,
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
-	cobra.CheckErr(rootCmd.Execute())
+	kik.FailIf(rootCmd.Execute(), 1)
 }
 
 func init() {
@@ -74,6 +75,7 @@ func init() {
 	shells = []string{"bash", "zsh", "fish", "powershell"}
 	rootCmd.SilenceUsage = true
 	rootCmd.SilenceErrors = true
+	rootCmd.CompletionOptions.DisableDefaultCmd = true
 
 	completionFlag := "completion"
 	rootCmd.PersistentFlags().StringVar(&completion, completionFlag, "", "generate shell completion")
@@ -93,7 +95,7 @@ func initConfig() {
 	} else {
 		// Find home directory.
 		home, err := homedir.Dir()
-		cobra.CheckErr(err)
+		kik.FailIf(err, 1)
 
 		// Search config in home directory with name ".net" (without extension).
 		viper.AddConfigPath(path.Join(home, ".config"))

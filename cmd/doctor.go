@@ -16,6 +16,7 @@ limitations under the License.
 package cmd
 
 import (
+	"github.com/mrgarelli/kik"
 	"github.com/mrgarelli/net/system"
 	"github.com/spf13/cobra"
 )
@@ -23,20 +24,20 @@ import (
 // doctorCmd represents the doctor command
 var doctorCmd = &cobra.Command{
 	Use:   "doctor",
-	Short: "Checks various driver, interfaces, routes (items necessary for network connection)",
-	Long:  `Checks various driver, interfaces, routes (items necessary for network connection)`,
+	Short: "checks driver, interfaces, & routes necessary for network connection",
+	Long:  `checks driver, interfaces, & routes necessary for network connection`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		system.Header("driver")
+		kik.Header("driver")
 		err := system.GetDriverInfo()
 		if err != nil {
 			return err
 		}
-		system.Header("interfaces")
+		kik.Header("interfaces")
 		err = system.ShowInterfaceInfo()
 		if err != nil {
 			return err
 		}
-		system.Header("routes")
+		kik.Header("routes")
 		err = system.ShowRouteInfo()
 		if err != nil {
 			return err
