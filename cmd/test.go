@@ -16,6 +16,9 @@ limitations under the License.
 package cmd
 
 import (
+	"errors"
+
+	"github.com/mrgarelli/kik"
 	"github.com/mrgarelli/net/system"
 	"github.com/spf13/cobra"
 )
@@ -23,14 +26,15 @@ import (
 // testCmd represents the test command
 var testCmd = &cobra.Command{
 	Use:   "test",
-	Short: "pings google 2x",
-	Long:  `pings google 2x`,
-	RunE: func(cmd *cobra.Command, args []string) error {
+	Short: "checks if connected to internet",
+	Long:  `checks if connected to internet`,
+	Run: func(cmd *cobra.Command, args []string) {
 		err := system.TestWifi()
 		if err != nil {
-			return err
+			err = errors.New("unable to connect to the internet")
+			kik.FailIf(err, kik.ExitCodes.NETWORK_ERROR)
 		}
-		return nil
+		kik.Success("connected to the internet")
 	},
 }
 

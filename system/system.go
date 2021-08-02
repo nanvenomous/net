@@ -30,10 +30,8 @@ func Header(text string) {
 }
 
 func TestWifi() error {
-	cmd := exec.Command("ping", "-c", "2", "google.com")
+	cmd := exec.Command("ping", "-c", "1", "google.com")
 
-	cmd.Stdin = os.Stdin
-	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 
 	err := cmd.Run()
