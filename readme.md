@@ -1,4 +1,4 @@
-# net Description
+# Description
 
 ```
 Manages network connections
@@ -11,11 +11,13 @@ Usage:
 
 Available Commands:
   config      command set for viewing and editing program configuration
-  ctrl        simply invokes iwctl
-  doctor      Checks various driver, interfaces, routes (items necessary for network connection)
+  connect     connects to the provided network name
+  disconnect  remove connection to wireless network
+  doctor      checks driver, interfaces, & routes necessary for network connection
   help        Help about any command
   list        scan for and list available networks
-  test        pings google 2x
+  status      get network connectivity
+  test        checks if connected to internet
 
 Flags:
       --completion string   generate shell completion
